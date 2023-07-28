@@ -2,10 +2,11 @@ from fastapi import APIRouter
 from api.users_models import UserSchema, UserAddSchema
 from domain_logic.user_factory import UserFactory
 from domain_logic.user_repo import UserRepo
+from persistence.UserPersistenceSqlite import UserPersistenceSqlite
 
 users_router = APIRouter(prefix="/users")
 
-user_repo = UserRepo()
+user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
 
 
 @users_router.get("", response_model=list[UserSchema])
