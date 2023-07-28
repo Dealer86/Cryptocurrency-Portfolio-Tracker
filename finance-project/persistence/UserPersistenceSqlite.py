@@ -1,13 +1,14 @@
 import sqlite3
 import uuid
 from domain_logic.user import User
+from domain_logic.user_persistence_interface import UserPersistenceInterface
 
 
-class UserPersistenceSqlite:
+class UserPersistenceSqlite(UserPersistenceInterface):
     def __init__(self, file_path: str):
         self.__file_path = file_path
 
-    def get_all(self) -> [User]:
+    def get_all(self) -> list[User]:
         with sqlite3.connect(self.__file_path) as conn:
             cursor = conn.cursor()
             try:
