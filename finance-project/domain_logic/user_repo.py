@@ -1,12 +1,16 @@
 from domain_logic.user import User
+from domain_logic.user_persistence_interface import UserPersistenceInterface
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
+
+
 class NonExistingUserId(Exception):
     pass
 
+
 class UserRepo:
-    def __init__(self):
+    def __init__(self, persistence: UserPersistenceInterface):
         self.__user_list = None
-        self.__persistence = UserPersistenceSqlite("users_data.db")
+        self.__persistence = persistence
 
     def get_all(self) -> list[User]:
         self.__check_we_have_users()
