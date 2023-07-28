@@ -1,8 +1,9 @@
-from fastapi import FastAPI
-
+from fastapi import FastAPI, Request
+from starlette.responses import JSONResponse
 import logging
 
 from api.users import users_router
+from domain_logic.user_repo import NonExistingUserId
 
 app = FastAPI(debug=True,
               description="A place to track/see and see cryptocurrency prices",
@@ -17,6 +18,11 @@ logging.basicConfig(
 )
 
 app.include_router(users_router)
+
+
+@app.exception_handler(NonExistingUserId)
+def return_400(_: Request, e: NonExistingUserId):
+    return JSONResponse(status_code=400, content=str(e))
 
 
 if __name__ == "__main__":
