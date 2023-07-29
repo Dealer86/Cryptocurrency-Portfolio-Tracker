@@ -13,5 +13,5 @@ class UserSchema(OrmSchema):
     crypto: list[str] = Field(description="List of cryptocurrency related to the user")
 
 
-class UserAddSchema(OrmSchema):
+class UserAddSchema(BaseModel):
     username: str = Field(description="Name of the user between 4 and 20 chars")
