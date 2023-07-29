@@ -15,11 +15,8 @@ crypto_factory = CryptoFactory()
 
 @crypto_router.get("{coins_id}", response_model=CryptoSchema)
 def get_cryptocurrency_data(coins_id: str):
-    try:
-        crypto = crypto_factory.make(coins_id)
-        return crypto
-    except Exception:
-        return {}
+    crypto = crypto_factory.make(coins_id)
+    return crypto
 
 
 @crypto_router.get("{coin_id}/history")
