@@ -5,6 +5,7 @@ from domain_logic.user.user import User
 
 
 class CryptoRepo:
+    # TODO refactor this code in the persistence layer and implement Repo so that it will manage Crypto objects
     def add_crypto_to_user(self, user_id: str, cryptocurrency: Crypto):
         with sqlite3.connect("main_users.db") as conn:
             cursor = conn.cursor()
