@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from api.users_models import UserSchema, UserAddSchema
-from domain_logic.user_factory import UserFactory
-from domain_logic.user_repo import UserRepo
+from domain_logic.user.user_factory import UserFactory
+from domain_logic.user.user_repo import UserRepo
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
 
 users_router = APIRouter(prefix="/users")
@@ -39,4 +39,3 @@ def delete(user_id: str):
 def update(user_id: str, username: UserAddSchema):
     user_repo.update(user_id, username.username)
     return user_repo.get_by_id(user_id)
-

@@ -4,7 +4,7 @@ import logging
 
 from api.crypto import crypto_router
 from api.users import users_router
-from domain_logic.user_repo import NonExistingUserId
+from domain_logic.user.user_repo import NonExistingUserId
 
 app = FastAPI(
     debug=True,

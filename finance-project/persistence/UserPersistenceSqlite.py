@@ -1,7 +1,7 @@
 import sqlite3
 import uuid
-from domain_logic.user import User
-from domain_logic.user_persistence_interface import UserPersistenceInterface
+from domain_logic.user.user import User
+from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 
 
 class UserPersistenceSqlite(UserPersistenceInterface):
@@ -27,11 +27,17 @@ class UserPersistenceSqlite(UserPersistenceInterface):
         with sqlite3.connect(self.__file_path) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute("INSERT INTO users VALUES (?, ?)", (str(user.id), user.username))
+                cursor.execute(
+                    "INSERT INTO users VALUES (?, ?)", (str(user.id), user.username)
+                )
             except sqlite3.OperationalError as e:
                 if "no such table" in str(e):
-                    cursor.execute("CREATE TABLE users(id TEXT PRIMARY KEY NOT NULL, username TEXT NOT NULL)")
-                    cursor.execute("INSERT INTO users VALUES (?, ?)", (str(user.id), user.username))
+                    cursor.execute(
+                        "CREATE TABLE users(id TEXT PRIMARY KEY NOT NULL, username TEXT NOT NULL)"
+                    )
+                    cursor.execute(
+                        "INSERT INTO users VALUES (?, ?)", (str(user.id), user.username)
+                    )
                 else:
                     raise e
             conn.commit()
@@ -49,7 +55,9 @@ class UserPersistenceSqlite(UserPersistenceInterface):
         with sqlite3.connect(self.__file_path) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute(f"UPDATE users SET username = '{username}' WHERE id = '{user_id}'")
+                cursor.execute(
+                    f"UPDATE users SET username = '{username}' WHERE id = '{user_id}'"
+                )
             except sqlite3.OperationalError as e:
                 raise e
             conn.commit()

@@ -1,9 +1,4 @@
-import uuid
 import requests
-from datetime import datetime, timezone
-import matplotlib.pyplot as plt
-from fastapi import APIRouter
-from fastapi.responses import FileResponse
 
 from domain_logic.crypto.crypto import Crypto
 
