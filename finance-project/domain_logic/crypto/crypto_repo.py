@@ -49,7 +49,7 @@ class CryptoRepo:
             cursor = conn.cursor()
             cursor.execute("SELECT price FROM crypto WHERE user_id = (?)", (user_id,))
             data = cursor.fetchall()
-            print(data)
+            # print(data)
             result = 0
             for every_price in data:
                 number = every_price[0]
