@@ -1,8 +1,10 @@
 from uuid import UUID
 
+from domain_logic.crypto.crypto import Crypto
+
 
 class User:
-    def __init__(self, uuid: UUID, username: str, crypto: list[str] = None):
+    def __init__(self, uuid: UUID, username: str, crypto: list[Crypto] = None):
         self.__id = uuid
         self.__username = username
         self.__crypto = crypto if crypto else []
@@ -16,7 +18,5 @@ class User:
         return self.__username
 
     @property
-    def crypto(self) -> list[str]:
+    def crypto(self) -> list[Crypto]:
         return self.__crypto
-
-
