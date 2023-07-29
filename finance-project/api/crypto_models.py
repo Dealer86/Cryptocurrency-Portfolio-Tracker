@@ -6,7 +6,7 @@ class CryptoSchema(BaseModel):
     symbol: str = Field(description="Symbol of cryptocurrency")
     price: float = Field(description="Price of cryptocurrency")
     last_updated: str = Field(description="Date of last update")
-    units: float = Field("Number of cryptocurrency")
+    units: float = Field(description="Number of cryptocurrency")
 
     class Config:
         from_attributes = True
