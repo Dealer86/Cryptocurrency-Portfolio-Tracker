@@ -4,6 +4,7 @@ import logging
 
 from api.crypto import crypto_router
 from api.users import users_router
+from domain_logic.crypto.crypto_factory import InvalidCoinId
 from domain_logic.user.user_repo import NonExistingUserId
 
 app = FastAPI(
@@ -25,6 +26,11 @@ app.include_router(crypto_router)
 
 @app.exception_handler(NonExistingUserId)
 def return_400(_: Request, e: NonExistingUserId):
+    return JSONResponse(status_code=400, content=str(e))
+
+
+@app.exception_handler(InvalidCoinId)
+def return_400(_: Request, e: InvalidCoinId):
     return JSONResponse(status_code=400, content=str(e))
 
 
