@@ -1,5 +1,9 @@
 from fastapi import APIRouter
+
+from api.crypto_models import CryptoSchema, CryptoAdd
 from api.users_models import UserSchema, UserAddSchema
+from domain_logic.crypto.crypto_factory import CryptoFactory
+from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user_factory import UserFactory
 from domain_logic.user.user_repo import UserRepo
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
@@ -7,6 +11,7 @@ from persistence.UserPersistenceSqlite import UserPersistenceSqlite
 users_router = APIRouter(prefix="/users")
 
 user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
+crypto_repo = CryptoRepo()
 
 
 @users_router.get("", response_model=list[UserSchema])
@@ -39,3 +44,14 @@ def delete(user_id: str):
 def update(user_id: str, username: UserAddSchema):
     user_repo.update(user_id, username.username)
     return user_repo.get_by_id(user_id)
+
+
+@users_router.post("/{user_id}/crypto")
+def add_crypto(user_id: str, crypto: CryptoAdd):
+    new_crypto = CryptoFactory.make(crypto.name)
+    crypto_repo.add_crypto_to_user(user_id, new_crypto)
+
+
+@users_router.get("/{user_id}/crypto", response_model=list[CryptoSchema])
+def get_crypto_for_user(user_id: str):
+    return crypto_repo.get_crypto_for_user(user_id)
