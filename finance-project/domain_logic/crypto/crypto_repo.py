@@ -30,8 +30,7 @@ class CryptoRepo:
         with sqlite3.connect("main_users.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM crypto WHERE user_id = (?)", (user_id,))
-            tuple_data = cursor.fetchall()
-            print(tuple_data)
+            list_of_tuple_data = cursor.fetchall()
             return [
                 Crypto(
                     name=c[1],
@@ -40,5 +39,17 @@ class CryptoRepo:
                     last_updated=c[4],
                     units=c[5],
                 )
-                for c in tuple_data
+                for c in list_of_tuple_data
             ]
+
+    def calculate_total_crypto_value(self, user_id: str) -> float:
+        with sqlite3.connect("main_users.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT price FROM crypto WHERE user_id = (?)", (user_id,))
+            data = cursor.fetchall()
+            print(data)
+            result = 0
+            for every_price in data:
+                number = every_price[0]
+                result += number
+            return result
