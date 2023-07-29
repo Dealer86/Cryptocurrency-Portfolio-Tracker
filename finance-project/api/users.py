@@ -55,3 +55,8 @@ def add_crypto(user_id: str, crypto: CryptoAdd):
 @users_router.get("/{user_id}/crypto", response_model=list[CryptoSchema])
 def get_crypto_for_user(user_id: str):
     return crypto_repo.get_crypto_for_user(user_id)
+
+
+@users_router.get("{user_id}/total")
+def get_crypto_total_value_for_user(user_id: str):
+    return crypto_repo.calculate_total_crypto_value(user_id)
