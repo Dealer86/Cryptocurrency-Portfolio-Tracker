@@ -1,12 +1,12 @@
 import sqlite3
 
 from domain_logic.crypto.crypto import Crypto
-from domain_logic.user.user import User
 
 
 class CryptoRepo:
     # TODO refactor this code in the persistence layer and implement Repo so that it will manage Crypto objects
-    def add_crypto_to_user(self, user_id: str, cryptocurrency: Crypto):
+    @classmethod
+    def add_crypto_to_user(cls, user_id: str, cryptocurrency: Crypto):
         with sqlite3.connect("main_users.db") as conn:
             cursor = conn.cursor()
             cursor.execute(
@@ -26,7 +26,8 @@ class CryptoRepo:
             )
             conn.commit()
 
-    def get_crypto_for_user(self, user_id: str) -> list[Crypto]:
+    @classmethod
+    def get_crypto_for_user(cls, user_id: str) -> list[Crypto]:
         with sqlite3.connect("main_users.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM crypto WHERE user_id = (?)", (user_id,))
@@ -42,7 +43,8 @@ class CryptoRepo:
                 for c in list_of_tuple_data
             ]
 
-    def calculate_total_crypto_value(self, user_id: str) -> float:
+    @classmethod
+    def calculate_total_crypto_value(cls, user_id: str) -> float:
         with sqlite3.connect("main_users.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT price FROM crypto WHERE user_id = (?)", (user_id,))
