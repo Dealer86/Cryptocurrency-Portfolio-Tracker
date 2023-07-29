@@ -1,3 +1,4 @@
+from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 
@@ -24,7 +25,8 @@ class UserRepo:
         self.__check_if_user_id_exists(user_id)
         for user in self.__user_list:
             if str(user.id) == user_id:
-                return user
+                crypto_list = CryptoRepo().get_crypto_for_user(str(user.id))
+                return User(uuid=user.id, username=user.username, crypto=crypto_list)
 
     def update(self, user_id: str, username: str):
         self.__check_we_have_users()
