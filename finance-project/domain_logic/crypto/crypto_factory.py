@@ -22,6 +22,7 @@ class CryptoFactory:
                         price=data["market_data"]["current_price"]["usd"],
                         last_updated=data["last_updated"],
                         symbol=data["symbol"],
+                        units=0,
                     )
                 else:
                     raise InvalidCoinId(
