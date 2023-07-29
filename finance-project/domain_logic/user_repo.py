@@ -22,7 +22,7 @@ class UserRepo:
         self.__user_list.append(user)
 
     def get_by_id(self, user_id: str) -> User:
-        self.__check_we_have_users()
+        self.__check_if_user_id_exists(user_id)
         for user in self.__user_list:
             if str(user.id) == user_id:
                 return user
@@ -40,6 +40,7 @@ class UserRepo:
         self.__user_list = self.__persistence.get_all()
 
     def __check_if_user_id_exists(self, user_id):
+        self.__check_we_have_users()
         if user_id not in [str(x.id) for x in self.__user_list]:
             raise NonExistingUserId(f"User with id {user_id} does not exist!")
 
