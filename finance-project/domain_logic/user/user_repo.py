@@ -1,6 +1,8 @@
+from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceInterface
 from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
+from persistence.CryptoPersistenceSqlite import CryptoSqlite
 
 
 class NonExistingUserId(Exception):
@@ -11,6 +13,7 @@ class UserRepo:
     def __init__(self, persistence: UserPersistenceInterface):
         self.__user_list = None
         self.__persistence = persistence
+        self.__crypto_persistence = CryptoRepo(CryptoSqlite("main_users.db"))
 
     def get_all(self) -> list[User]:
         self.__check_we_have_users()
@@ -25,8 +28,15 @@ class UserRepo:
         self.__check_if_user_id_exists(user_id)
         for user in self.__user_list:
             if str(user.id) == user_id:
-                crypto_list = CryptoRepo().get_crypto_for_user(str(user.id))
-                return User(uuid=user.id, username=user.username, crypto=crypto_list)
+                crypto_list = self.__crypto_persistence.get_crypto_for_user(
+                    str(user.id)
+                )
+                try:
+                    return User(
+                        uuid=user.id, username=user.username, crypto=crypto_list
+                    )
+                except Exception as e:
+                    print("CEVA NU E IN ORDINE" + str(e))
 
     def update(self, user_id: str, username: str):
         self.__check_we_have_users()
