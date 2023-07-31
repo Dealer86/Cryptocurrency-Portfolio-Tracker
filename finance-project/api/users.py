@@ -6,12 +6,15 @@ from domain_logic.crypto.crypto_factory import CryptoFactory
 from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user_factory import UserFactory
 from domain_logic.user.user_repo import UserRepo
+from persistence.CryptoPersistenceSqlite import CryptoSqlite
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
 
 users_router = APIRouter(prefix="/users")
 
 user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
-crypto_repo = CryptoRepo()
+
+
+crypto_repo = CryptoRepo(CryptoSqlite("main_users.db"))
 
 
 @users_router.get("", response_model=list[UserSchema])
@@ -60,3 +63,7 @@ def get_crypto_for_user(user_id: str):
 @users_router.get("{user_id}/total")
 def get_crypto_total_value_for_user(user_id: str):
     return crypto_repo.calculate_total_crypto_value(user_id)
+
+
+if __name__ == "__main__":
+    print(user_repo.get_all())
