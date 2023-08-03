@@ -3,6 +3,7 @@ from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 from persistence.CryptoPersistenceSqlite import CryptoSqlite
+from persistence.external_crypto_api import ExternalCryptoApi
 
 
 class NonExistingUserId(Exception):
@@ -13,7 +14,8 @@ class UserRepo:
     def __init__(self, persistence: UserPersistenceInterface):
         self.__user_list = None
         self.__persistence = persistence
-        self.__crypto_persistence = CryptoRepo(CryptoSqlite("main_users.db"))
+        external_api = ExternalCryptoApi()
+        self.__crypto_persistence = CryptoRepo(CryptoSqlite("main_users.db"), external_api)
 
     def get_all(self) -> list[User]:
         self.__check_we_have_users()

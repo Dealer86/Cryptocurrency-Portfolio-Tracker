@@ -8,13 +8,14 @@ from domain_logic.user.user_factory import UserFactory
 from domain_logic.user.user_repo import UserRepo
 from persistence.CryptoPersistenceSqlite import CryptoSqlite
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
+from persistence.external_crypto_api import ExternalCryptoApi
 
 users_router = APIRouter(prefix="/users")
 
 user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
 
-
-crypto_repo = CryptoRepo(CryptoSqlite("main_users.db"))
+external_api = ExternalCryptoApi()
+crypto_repo = CryptoRepo(CryptoSqlite("main_users.db"), external_api)
 
 
 @users_router.get("", response_model=list[UserSchema])

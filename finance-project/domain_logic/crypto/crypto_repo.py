@@ -2,12 +2,17 @@ import sqlite3
 
 from domain_logic.crypto.crypto import Crypto
 from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceInterface
+from domain_logic.crypto.external_crypto_api_interface import ExternalCryptoApiInterface
 
 
 class CryptoRepo:
-    def __init__(self, persistence: CryptoPersistenceInterface):
+    def __init__(self, persistence: CryptoPersistenceInterface, external_api: ExternalCryptoApiInterface):
+        self.__external_api = external_api
         self.__persistence = persistence
         self.__user_crypto_cache = {}
+
+    def use_external_api(self, coin_id: str, start_date: str = "2023-01-01", end_date: str = "2023-07-28"):
+        return self.__external_api.get_cryptocurrency_price_history(coin_id, start_date, end_date)
 
     def add_crypto_to_user(self, user_id: str, cryptocurrency: Crypto):
         self.__persistence.add_crypto_to_user(user_id, cryptocurrency)
