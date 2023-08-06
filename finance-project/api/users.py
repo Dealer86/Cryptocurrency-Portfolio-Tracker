@@ -8,14 +8,18 @@ from domain_logic.user.user_factory import UserFactory
 from domain_logic.user.user_repo import UserRepo
 from persistence.CryptoPersistenceSqlite import CryptoSqlite
 from persistence.UserPersistenceSqlite import UserPersistenceSqlite
+from persistence.crypto_persistence_file import CryptoPersistenceFile
 from persistence.external_crypto_api import ExternalCryptoApi
+from persistence.user_persistence_file import UserPersistenceFile
 
 users_router = APIRouter(prefix="/users")
+file_persistence_users = UserPersistenceFile("main_users.json")
+# user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
 
-user_repo = UserRepo(UserPersistenceSqlite("main_users.db"))
-
+user_repo = UserRepo(file_persistence_users)
 external_api = ExternalCryptoApi()
-crypto_repo = CryptoRepo(CryptoSqlite("main_users.db"), external_api)
+# crypto_repo = CryptoRepo(CryptoSqlite("main_users.db"), external_api)
+crypto_repo = CryptoRepo(CryptoPersistenceFile("main_users.json"), external_api)
 
 
 @users_router.get("", response_model=list[UserSchema])
@@ -65,6 +69,3 @@ def get_crypto_for_user(user_id: str):
 def get_crypto_total_value_for_user(user_id: str):
     return crypto_repo.calculate_total_crypto_value(user_id)
 
-
-if __name__ == "__main__":
-    print(user_repo.get_all())
