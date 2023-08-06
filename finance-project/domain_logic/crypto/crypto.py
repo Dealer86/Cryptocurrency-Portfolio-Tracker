@@ -27,3 +27,22 @@ class Crypto:
     @property
     def units(self):
         return self.__units
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        return Crypto(
+            name=d["name"],
+            symbol=d["symbol"],
+            price=d["price"],
+            last_updated=d["last_updated"],
+            units=d["units"]
+        )
+
+    def to_dict(self):
+        return {
+            "name": self.__name,
+            "symbol": self.__symbol,
+            "price": self.__price,
+            "last_updated": self.__last_updated,
+            "units": self.__units
+        }
