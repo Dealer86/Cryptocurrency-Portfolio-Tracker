@@ -27,6 +27,7 @@ This project uses the following technologies:
 * CoinGecko API - cryptocurrency data API for traders and developers.
 
 ## Resources
+
 For more information about FastAPI, visit their [official documentation](https://fastapi.tiangolo.com/).
 
 For more information about Uvicorn, visit their [official documentation](https://www.uvicorn.org/).
