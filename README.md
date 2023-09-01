@@ -16,7 +16,7 @@ Cryptocurrency Portfolio Tracker, designed for managing and analyzing cryptocurr
 9. Check [swagger](http://127.0.0.1:8000/docs). 
 
 ## Technology Stack
-Leveraging modern tools such as FastAPI, Uvicorn, Json and sqlit3 as databases along with integration of financial API(CoinGecko), this project showcases my skills in both backend development and fintech API integration.
+Leveraging modern tools such as FastAPI, Uvicorn, Json and sqlite3 as databases along with integration of financial API(CoinGecko), this project showcases my skills in both backend development and fintech API integration.
 Following SOLID principles, employing design patterns, and adhering to Domain-Driven Design (DDD) concepts, I've created a robust and extensible application.
 
 This project uses the following technologies:
