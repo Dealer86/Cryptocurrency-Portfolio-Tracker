@@ -1,6 +1,6 @@
-# Crypto-Fintech-Api
+# Cryptocurrency Portfolio Tracker
 
-Crypto-Fintech-Api is a web server with a REST API that allows you to keep track of your cryptocurrency and compare their evolution over time.
+Cryptocurrency Portfolio Tracker, designed for managing and analyzing cryptocurrency investments, is a web server with REST API that allows you to keep track of your cryptocurrency and compare their evolution over time.
 
 ## Deployment Instructions
 
@@ -11,10 +11,14 @@ Crypto-Fintech-Api is a web server with a REST API that allows you to keep track
 4. Activate the virtual environment by running `.\env\Scripts\activate`
 5. Upgrade pip by running `python.exe -m pip install --upgrade pip`
 6. Install the required dependencies by running `pip install -r requirements.txt`
-7. Run main.py located finance-project folder
-8. Check [swagger](http://127.0.0.1:8000/docs). 
+7. Configure database settings(pick sqlite3 or json) in the config.py file found in configuration file.
+8. Run main.py located finance-project folder
+9. Check [swagger](http://127.0.0.1:8000/docs). 
 
 ## Technology Stack
+Leveraging modern tools such as FastAPI, Uvicorn, Json and sqlit3 as databases along with integration of financial API(CoinGecko), this project showcases my skills in both backend development and fintech API integration.
+Following SOLID principles, employing design patterns, and adhering to Domain-Driven Design (DDD) concepts, I've created a robust and extensible application.
+
 This project uses the following technologies:
 * FastAPI - a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python type hints
 * Uvicorn - a lightning-fast ASGI server, built on top of the asyncio event loop
