@@ -5,14 +5,14 @@ Cryptocurrency Portfolio Tracker, designed for managing and analyzing cryptocurr
 ## Deployment Instructions
 
 ### Windows
-1. Clone the git repository using `<git_repo_url>`
-2. Navigate to the `cd <your-created-directory>` directory
-3. Create a new virtual environment by running `python -m venv env/`
-4. Activate the virtual environment by running `.\env\Scripts\activate`
-5. Upgrade pip by running `python.exe -m pip install --upgrade pip`
-6. Install the required dependencies by running `pip install -r requirements.txt`
+1. Clone the git repository using `<git_repo_url>`.
+2. Navigate to the `cd <your-created-directory>` directory.
+3. Create a new virtual environment by running `python -m venv env/`.
+4. Activate the virtual environment by running `.\env\Scripts\activate`.
+5. Upgrade pip by running `python.exe -m pip install --upgrade pip`.
+6. Install the required dependencies by running `pip install -r requirements.txt`.
 7. Configure database settings(pick sqlite3 or json) in the config.json file found in configuration file.
-8. Run main.py location -> finance-project folder
+8. Run main.py location -> finance-project folder.
 9. Check [swagger](http://127.0.0.1:8000/docs). 
 
 ## Technology Stack
@@ -20,11 +20,11 @@ Leveraging modern tools such as FastAPI, Uvicorn, Json and sqlite3 as databases 
 Following SOLID principles, employing design patterns, and adhering to Domain-Driven Design (DDD) concepts, I've created a robust and extensible application.
 
 This project uses the following technologies:
-* FastAPI - a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python type hints
-* Uvicorn - a lightning-fast ASGI server, built on top of the asyncio event loop
-* Matplotlib - a Python library for creating static, animated, and interactive visualizations in Python
-* Sqlite3 - SQLite is library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine
-* CoinGecko API - cryptocurrency data API for traders and developers
+* FastAPI - a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python type hints.
+* Uvicorn - a lightning-fast ASGI server, built on top of the asyncio event loop.
+* Matplotlib - a Python library for creating static, animated, and interactive visualizations in Python.
+* Sqlite3 - SQLite is library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine.
+* CoinGecko API - cryptocurrency data API for traders and developers.
 
 ## Resources
 For more information about FastAPI, visit their [official documentation](https://fastapi.tiangolo.com/).
