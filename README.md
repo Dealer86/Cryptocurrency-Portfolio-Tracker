@@ -12,7 +12,7 @@ Cryptocurrency Portfolio Tracker, designed for managing and analyzing cryptocurr
 5. Upgrade pip by running `python.exe -m pip install --upgrade pip`
 6. Install the required dependencies by running `pip install -r requirements.txt`
 7. Configure database settings(pick sqlite3 or json) in the config.json file found in configuration file.
-8. Run main.py located finance-project folder
+8. Run main.py location -> finance-project folder
 9. Check [swagger](http://127.0.0.1:8000/docs). 
 
 ## Technology Stack
