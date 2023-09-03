@@ -4,10 +4,8 @@ from datetime import datetime, timezone
 import matplotlib.pyplot as plt
 from fastapi.responses import FileResponse
 
-from domain_logic.crypto.external_crypto_api_interface import ExternalCryptoApiInterface
 
-
-class ExternalCryptoApi(ExternalCryptoApiInterface):
+class CryptoCurrencyPriceHistory:
     @classmethod
     def get_cryptocurrency_price_history(
         cls, coin_id: str, start_date: str = "2023-01-01", end_date: str = "2023-07-28"
