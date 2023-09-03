@@ -1,5 +1,4 @@
 import sqlite3
-import uuid
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 
