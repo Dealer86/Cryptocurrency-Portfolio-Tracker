@@ -1,12 +1,11 @@
-from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceInterface
 from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 from persistence.CryptoPersistenceSqlite import CryptoSqlite
-from persistence.external_crypto_api import ExternalCryptoApi
 from domain_logic.user.subject import Subject
 from domain_logic.user.observer import Observer
 from domain_logic.user.concrete_logger_observer import ConcreteLoggerObserver
+from configuration.config import set_crypto_persistence_type
 class NonExistingUserId(Exception):
     pass
 
@@ -15,8 +14,8 @@ class UserRepo(Subject):
     def __init__(self, persistence: UserPersistenceInterface):
         self.__user_list = None
         self.__persistence = persistence
-        external_api = ExternalCryptoApi()
-        self.__crypto_persistence = CryptoRepo(CryptoSqlite("main_users.db"), external_api)
+        crypto_persistence_type = set_crypto_persistence_type("configuration/config.json")
+        self.__crypto_persistence = CryptoRepo(crypto_persistence_type)
         self.__observers = []
         logger_observer = ConcreteLoggerObserver()
         self.add_observer(logger_observer)
@@ -72,7 +71,6 @@ class UserRepo(Subject):
 
 
     def update(self, user_id: str, username: str):
-        self.__check_we_have_users()
         self.__check_if_user_id_exists(user_id)
         self.__persistence.update(user_id, username)
         self.notify_observer_for_updating_username(user_id, username)
@@ -80,7 +78,6 @@ class UserRepo(Subject):
 
 
     def delete(self, user_id: str):
-        self.__check_we_have_users()
         self.__check_if_user_id_exists(user_id)
         self.__persistence.delete(user_id)
         self.notify_observer_for_removing_user(user_id)
