@@ -8,7 +8,8 @@ from domain_logic.user.concrete_logger_observer import ConcreteLoggerObserver
 from configuration.config import set_crypto_persistence_type
 class NonExistingUserId(Exception):
     pass
-
+class UserAlreadyAdded(Exception):
+    pass
 
 class UserRepo(Subject):
     def __init__(self, persistence: UserPersistenceInterface):
@@ -50,6 +51,8 @@ class UserRepo(Subject):
 
     def add(self, user: User):
         self.__check_we_have_users()
+        if user.username in [u.username for u in self.__persistence.get_all()]:
+            raise UserAlreadyAdded(f"User with username {user.username} is already taken. Try another username")
         self.__persistence.add(user)
         self.__user_list.append(user)
         self.notify_observer_for_adding_user(user)
@@ -67,8 +70,8 @@ class UserRepo(Subject):
                         uuid=user.id, username=user.username, crypto=crypto_list
                     )
                 except Exception as e:
-                    print("CEVA NU E IN ORDINE" + str(e))
-
+                    print("Could not return user. Reason: " + str(e))
+                    raise e
 
     def update(self, user_id: str, username: str):
         self.__check_if_user_id_exists(user_id)
