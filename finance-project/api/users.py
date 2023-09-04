@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from api.crypto_models import CryptoSchema, CryptoAdd
 from api.users_models import UserSchema, UserAddSchema
@@ -26,19 +26,32 @@ def get_crypto_repo():
 
 @users_router.get("", response_model=list[UserSchema])
 def get_all_users(user_repo=Depends(get_user_repo)):
-    return user_repo.get_all()
+    try:
+        return user_repo.get_all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.post("", response_model=UserSchema)
 def create_user(user: UserAddSchema, user_repo=Depends(get_user_repo)):
-    new_user = UserFactory.make(user.username)
-    user_repo.add(new_user)
-    return new_user
+    try:
+        new_user = UserFactory.make(user.username)
+        user_repo.add(new_user)
+        return new_user
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.get("/{user_id}", response_model=UserSchema)
 def get_by_id(user_id: str, user_repo=Depends(get_user_repo)):
-    return user_repo.get_by_id(user_id)
+    try:
+        return user_repo.get_by_id(user_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"User with id {user_id} not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.delete("/{user_id}")
@@ -46,28 +59,51 @@ def delete(user_id: str, user_repo=Depends(get_user_repo)):
     try:
         user_repo.delete(user_id)
         return {"status": "ok"}
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"User with id {user_id} not found.")
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.put("/{user_id}", response_model=UserSchema)
 def update(user_id: str, username: UserAddSchema, user_repo=Depends(get_user_repo)):
-    user_repo.update(user_id, username.username)
-    return user_repo.get_by_id(user_id)
+    try:
+        user_repo.update(user_id, username.username)
+        return user_repo.get_by_id(user_id)
+    except KeyError as ke:
+        raise HTTPException(status_code=404, detail=str(ke))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.post("/{user_id}/crypto")
 def add_crypto(user_id: str, crypto: CryptoAdd, crypto_repo=Depends(get_crypto_repo)):
-    new_crypto = CryptoFactory.make(crypto.name)
-    crypto_repo.add_crypto_to_user(user_id, new_crypto)
+    try:
+        new_crypto = CryptoFactory.make(crypto.name)
+        crypto_repo.add_crypto_to_user(user_id, new_crypto)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.get("/{user_id}/crypto", response_model=list[CryptoSchema])
 def get_crypto_for_user(user_id: str, crypto_repo=Depends(get_crypto_repo)):
-    return crypto_repo.get_crypto_for_user(user_id)
+    try:
+        return crypto_repo.get_crypto_for_user(user_id)
+    except KeyError as ke:
+        raise HTTPException(status_code=404, detail=str(ke))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.get("{user_id}/total")
 def get_crypto_total_value_for_user(user_id: str, crypto_repo=Depends(get_crypto_repo)):
-    return crypto_repo.calculate_total_crypto_value(user_id)
+    try:
+        return crypto_repo.calculate_total_crypto_value(user_id)
+    except KeyError as ke:
+        raise HTTPException(status_code=404, detail=str(ke))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
