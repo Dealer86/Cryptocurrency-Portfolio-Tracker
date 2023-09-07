@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from uuid import UUID
 
-from api.crypto_models import CryptoSchema
+from api.models.crypto_models import CryptoSchema
 
 
 class OrmSchema(BaseModel):
