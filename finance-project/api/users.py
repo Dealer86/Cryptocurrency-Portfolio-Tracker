@@ -6,8 +6,7 @@ from configuration.config import set_user_persistence_type, set_crypto_persisten
 from domain_logic.crypto.crypto_factory import CryptoFactory
 from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user_factory import UserFactory
-from domain_logic.user.repo import UserRepo
-
+from domain_logic.user.repo import UserRepo, NonExistingUserId
 
 users_router = APIRouter(prefix="/users")
 
@@ -48,12 +47,10 @@ def create_user(user: UserAddSchema, user_repo=Depends(get_user_repo)):
 def get_by_id(user_id: str, user_repo=Depends(get_user_repo)):
     try:
         return user_repo.get_by_id(user_id)
-    except KeyError:
+    except NonExistingUserId as e:
         raise HTTPException(
-            status_code=404, detail=f"User with id {user_id} not found."
+            status_code=404, detail=str(e)
         )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @users_router.delete("/{user_id}")
