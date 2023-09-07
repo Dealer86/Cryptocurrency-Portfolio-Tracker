@@ -27,10 +27,14 @@ class CryptoRepo(Subject):
             del self.__user_crypto_cache[user_id]
 
     def get_crypto_for_user(self, user_id: str) -> list[Crypto]:
-        self.notify_observer(f"CryptoRepo executing get_crypto_for_user with id {user_id}...")
+        self.notify_observer(
+            f"CryptoRepo executing get_crypto_for_user with id {user_id}..."
+        )
         # Check if user's crypto data is cached
         if user_id in self.__user_crypto_cache:
-            self.notify_observer(f"CryptoRepo successfully executed get_crypto_for_user with id {user_id} from cache")
+            self.notify_observer(
+                f"CryptoRepo successfully executed get_crypto_for_user with id {user_id} from cache"
+            )
             return self.__user_crypto_cache[user_id]
         # If not cached, fetch from the database and cache it
         crypto_list = self.__persistence.get_crypto_for_user(user_id)
@@ -41,7 +45,9 @@ class CryptoRepo(Subject):
         return crypto_list
 
     def calculate_total_crypto_value(self, user_id: str) -> float:
-        self.notify_observer(f"CryptoRepo executing calculate_total_crypto_value for user with id {user_id}...")
+        self.notify_observer(
+            f"CryptoRepo executing calculate_total_crypto_value for user with id {user_id}..."
+        )
         # Check if total value is cached
         if user_id in self.__user_crypto_cache:
             self.notify_observer(
