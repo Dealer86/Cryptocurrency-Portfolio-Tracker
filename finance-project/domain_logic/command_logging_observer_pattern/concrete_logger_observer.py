@@ -1,4 +1,4 @@
-from domain_logic.observer_pattern.observer import Observer
+from domain_logic.command_logging_observer_pattern.observer import Observer
 
 import logging
 
