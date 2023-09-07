@@ -1,8 +1,8 @@
 from domain_logic.crypto.crypto import Crypto
 from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceInterface
-from domain_logic.user.concrete_logger_observer import ConcreteLoggerObserver
-from domain_logic.user.observer import Observer
-from domain_logic.user.subject import Subject
+from domain_logic.observer_pattern.concrete_logger_observer import ConcreteLoggerObserver
+from domain_logic.observer_pattern.observer import Observer
+from domain_logic.observer_pattern.subject import Subject
 
 
 class CryptoRepo(Subject):
