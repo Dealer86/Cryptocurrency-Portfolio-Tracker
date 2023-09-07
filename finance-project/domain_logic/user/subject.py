@@ -11,5 +11,5 @@ class Subject(ABC):
         pass
 
     @abstractmethod
-    def notify_observer_for_adding_user(self):
+    def notify_observer(self, message: str):
         pass
