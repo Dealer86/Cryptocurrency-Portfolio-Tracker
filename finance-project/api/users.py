@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.crypto_models import CryptoSchema, CryptoAdd
-from api.users_models import UserSchema, UserAddSchema
+from api.models.crypto_models import CryptoSchema, CryptoAdd
+from api.models.users_models import UserSchema, UserAddSchema
 from configuration.config import set_user_persistence_type, set_crypto_persistence_type
 from domain_logic.crypto.crypto_factory import CryptoFactory
 from domain_logic.crypto.crypto_repo import CryptoRepo
 from domain_logic.user.user_factory import UserFactory
-from domain_logic.user.user_repo import UserRepo
+from domain_logic.user.repo import UserRepo
 
 
 users_router = APIRouter(prefix="/users")
@@ -49,7 +49,9 @@ def get_by_id(user_id: str, user_repo=Depends(get_user_repo)):
     try:
         return user_repo.get_by_id(user_id)
     except KeyError:
-        raise HTTPException(status_code=404, detail=f"User with id {user_id} not found.")
+        raise HTTPException(
+            status_code=404, detail=f"User with id {user_id} not found."
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -60,7 +62,9 @@ def delete(user_id: str, user_repo=Depends(get_user_repo)):
         user_repo.delete(user_id)
         return {"status": "ok"}
     except KeyError:
-        raise HTTPException(status_code=404, detail=f"User with id {user_id} not found.")
+        raise HTTPException(
+            status_code=404, detail=f"User with id {user_id} not found."
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -105,5 +109,3 @@ def get_crypto_total_value_for_user(user_id: str, crypto_repo=Depends(get_crypto
         raise HTTPException(status_code=404, detail=str(ke))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
