@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from api.crypto_models import CryptoSchema
+from api.models.crypto_models import CryptoSchema
 from api.cryptocurrency_price_history import CryptoCurrencyPriceHistory
 from api.cryptocurrency_market_cap import CryptocurrencyMarketCap
 from domain_logic.crypto.crypto_factory import CryptoFactory
