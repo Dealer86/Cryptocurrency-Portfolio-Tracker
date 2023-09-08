@@ -1,11 +1,10 @@
-from fastapi import FastAPI, Request
-from starlette.responses import JSONResponse
 import logging
+
+from fastapi import FastAPI
 
 from api.crypto import crypto_router
 from api.users import users_router
-from domain_logic.crypto.crypto_factory import InvalidCoinId
-from domain_logic.user.repo import NonExistingUserId
+
 
 app = FastAPI(
     debug=True,
@@ -22,16 +21,6 @@ logging.basicConfig(
 
 app.include_router(users_router)
 app.include_router(crypto_router)
-
-
-@app.exception_handler(NonExistingUserId)
-def return_400(_: Request, e: NonExistingUserId):
-    return JSONResponse(status_code=400, content=str(e))
-
-
-@app.exception_handler(InvalidCoinId)
-def return_400(_: Request, e: InvalidCoinId):
-    return JSONResponse(status_code=400, content=str(e))
 
 
 if __name__ == "__main__":
