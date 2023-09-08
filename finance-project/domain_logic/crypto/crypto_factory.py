@@ -1,10 +1,7 @@
 import requests
 
 from domain_logic.crypto.crypto import Crypto
-
-
-class InvalidCoinId(Exception):
-    pass
+from exceptions.exceptions import InvalidCoinId
 
 
 class CryptoFactory:
