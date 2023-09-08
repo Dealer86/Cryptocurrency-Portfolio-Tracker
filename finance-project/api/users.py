@@ -10,6 +10,7 @@ from exceptions.exceptions import (
     InvalidUsername,
     UsernameAlreadyExistsException,
     UserNotFound,
+    InvalidCoinId,
 )
 from domain_logic.user.user_factory import UserFactory
 from domain_logic.user.repo import UserRepo
@@ -34,7 +35,7 @@ def get_all_users(user_repo=Depends(get_user_repo)):
     try:
         return user_repo.get_all()
     except UserFileError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=422, detail=str(e))
 
 
 @users_router.post("", response_model=UserSchema)
@@ -80,27 +81,23 @@ def add_crypto(user_id: str, crypto: CryptoAdd, crypto_repo=Depends(get_crypto_r
     try:
         new_crypto = CryptoFactory.make(crypto.name)
         crypto_repo.add_crypto_to_user(user_id, new_crypto)
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except InvalidCoinId as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @users_router.get("/{user_id}/crypto", response_model=list[CryptoSchema])
 def get_crypto_for_user(user_id: str, crypto_repo=Depends(get_crypto_repo)):
     try:
         return crypto_repo.get_crypto_for_user(user_id)
-    except KeyError as ke:
-        raise HTTPException(status_code=404, detail=str(ke))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @users_router.get("{user_id}/total")
 def get_crypto_total_value_for_user(user_id: str, crypto_repo=Depends(get_crypto_repo)):
     try:
         return crypto_repo.calculate_total_crypto_value(user_id)
-    except KeyError as ke:
-        raise HTTPException(status_code=404, detail=str(ke))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
