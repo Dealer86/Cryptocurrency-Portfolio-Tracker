@@ -1,4 +1,5 @@
 from domain_logic.crypto.crypto_repo import CryptoRepo
+from exceptions.exceptions import UserAlreadyAdded, UserNotFound
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 from domain_logic.command_logging_observer_pattern.subject import Subject
@@ -7,14 +8,6 @@ from domain_logic.command_logging_observer_pattern.concrete_logger_observer impo
     ConcreteLoggerObserver,
 )
 from configuration.config import set_crypto_persistence_type
-
-
-class NonExistingUserId(Exception):
-    pass
-
-
-class UserAlreadyAdded(Exception):
-    pass
 
 
 class UserRepo(Subject):
@@ -113,7 +106,7 @@ class UserRepo(Subject):
         self.__check_we_have_users()
         if user_id not in [str(x.id) for x in self.__user_list]:
             self.notify_observer(f"User with id {user_id} does not exist!")
-            raise NonExistingUserId(f"User with id {user_id} does not exist!")
+            raise UserNotFound(f"User with id {user_id} does not exist!")
 
     def __check_we_have_users(self):
         if self.__user_list is None:
