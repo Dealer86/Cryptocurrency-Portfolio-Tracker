@@ -21,10 +21,12 @@ class CryptoFactory:
                     logging.info(
                         f"CryptoFactory successfully created a Crypto object for coin with ticker {coins_id}."
                     )
+                    last_updated = data["last_updated"][:-5]
+
                     return Crypto(
                         name=data["name"],
                         price=data["market_data"]["current_price"]["usd"],
-                        last_updated=data["last_updated"],
+                        last_updated=last_updated,
                         symbol=data["symbol"],
                         units=0,
                     )
