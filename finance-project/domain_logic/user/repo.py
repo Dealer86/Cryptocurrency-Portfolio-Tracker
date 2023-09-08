@@ -3,7 +3,9 @@ from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
 from domain_logic.command_logging_observer_pattern.subject import Subject
 from domain_logic.command_logging_observer_pattern.observer import Observer
-from domain_logic.command_logging_observer_pattern.concrete_logger_observer import ConcreteLoggerObserver
+from domain_logic.command_logging_observer_pattern.concrete_logger_observer import (
+    ConcreteLoggerObserver,
+)
 from configuration.config import set_crypto_persistence_type
 
 
@@ -79,7 +81,8 @@ class UserRepo(Subject):
         self.__check_if_user_id_exists(user_id)
         self.__persistence.update(user_id, username)
         self.notify_observer(
-            f"UserRepo successfully executed update command for user with id {user_id} and username {username}.  Refreshing cache."
+            f"UserRepo successfully executed update command "
+            f"for user with id {user_id} and username {username}.Refreshing cache."
         )
         self.__user_list = self.__persistence.get_all()
 
