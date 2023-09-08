@@ -5,8 +5,14 @@ from api.models.users_models import UserSchema, UserAddSchema
 from configuration.config import set_user_persistence_type, set_crypto_persistence_type
 from domain_logic.crypto.crypto_factory import CryptoFactory
 from domain_logic.crypto.crypto_repo import CryptoRepo
+from exceptions.exceptions import (
+    UserFileError,
+    InvalidUsername,
+    UsernameAlreadyExistsException,
+    UserNotFound,
+)
 from domain_logic.user.user_factory import UserFactory
-from domain_logic.user.repo import UserRepo, NonExistingUserId
+from domain_logic.user.repo import UserRepo
 
 users_router = APIRouter(prefix="/users")
 
@@ -27,8 +33,8 @@ def get_crypto_repo():
 def get_all_users(user_repo=Depends(get_user_repo)):
     try:
         return user_repo.get_all()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except UserFileError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @users_router.post("", response_model=UserSchema)
@@ -37,33 +43,27 @@ def create_user(user: UserAddSchema, user_repo=Depends(get_user_repo)):
         new_user = UserFactory.make(user.username)
         user_repo.add(new_user)
         return new_user
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except InvalidUsername as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except UsernameAlreadyExistsException as e:
+        raise HTTPException(status_code=409, detail=str(e))
 
 
 @users_router.get("/{user_id}", response_model=UserSchema)
 def get_by_id(user_id: str, user_repo=Depends(get_user_repo)):
     try:
         return user_repo.get_by_id(user_id)
-    except NonExistingUserId as e:
-        raise HTTPException(
-            status_code=404, detail=str(e)
-        )
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @users_router.delete("/{user_id}")
 def delete(user_id: str, user_repo=Depends(get_user_repo)):
     try:
         user_repo.delete(user_id)
-        return {"status": "ok"}
-    except KeyError:
-        raise HTTPException(
-            status_code=404, detail=f"User with id {user_id} not found."
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"status": f"Successfully deleted user with id {user_id}"}
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @users_router.put("/{user_id}", response_model=UserSchema)
@@ -71,10 +71,8 @@ def update(user_id: str, username: UserAddSchema, user_repo=Depends(get_user_rep
     try:
         user_repo.update(user_id, username.username)
         return user_repo.get_by_id(user_id)
-    except KeyError as ke:
-        raise HTTPException(status_code=404, detail=str(ke))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except UserNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @users_router.post("/{user_id}/crypto")
