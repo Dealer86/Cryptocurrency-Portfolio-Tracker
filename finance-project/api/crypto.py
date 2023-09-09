@@ -18,9 +18,7 @@ def get_cryptocurrency_data(coins_id: str):
 def get_cryptocurrency_price_history(
     coin_id: str, start_date: str = "2023-01-01", end_date: str = "2023-07-28"
 ):
-    return CryptoInfo.get_cryptocurrency_price_history(
-        coin_id, start_date, end_date
-    )
+    return CryptoInfo.get_cryptocurrency_price_history(coin_id, start_date, end_date)
 
 
 @crypto_router.get("{coin_id}/market_cap")

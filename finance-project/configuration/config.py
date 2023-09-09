@@ -19,7 +19,9 @@ def set_user_persistence_type(file_path: str):
         elif user_config_choice.get("persistence") == "sqlite":
             return UserPersistenceSqlite("main_users.db")
         else:
-            raise InvalidDataBase("Config must be json or sqlite, be sure it is properly specified in config.json")
+            raise InvalidDataBase(
+                "Config must be json or sqlite, be sure it is properly specified in config.json"
+            )
 
 
 def set_crypto_persistence_type(file_path: str):
@@ -31,4 +33,6 @@ def set_crypto_persistence_type(file_path: str):
         elif user_config_choice.get("persistence") == "sqlite":
             return CryptoSqlite("main_users.db")
         else:
-            raise InvalidDataBase("Config must be json or sqlite, be sure it is properly specified in config.json")
+            raise InvalidDataBase(
+                "Config must be json or sqlite, be sure it is properly specified in config.json"
+            )

@@ -35,7 +35,7 @@ class Crypto:
             symbol=d["symbol"],
             price=d["price"],
             last_updated=d["last_updated"],
-            units=d["units"]
+            units=d["units"],
         )
 
     def to_dict(self):
@@ -44,5 +44,5 @@ class Crypto:
             "symbol": self.__symbol,
             "price": self.__price,
             "last_updated": self.__last_updated,
-            "units": self.__units
+            "units": self.__units,
         }

@@ -4,7 +4,6 @@ from domain_logic.user.user import User
 
 
 class UserPersistenceInterface(ABC):
-
     @abstractmethod
     def get_all(self) -> list[User]:
         pass

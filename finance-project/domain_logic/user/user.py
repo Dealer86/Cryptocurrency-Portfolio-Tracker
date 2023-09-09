@@ -27,10 +27,16 @@ class User:
 
     @classmethod
     def from_dict(cls, d: dict):
-
-        return User(uuid=d["id"], username=d["username"], crypto=[Crypto.from_dict(x) for x in d["crypto"]])
+        return User(
+            uuid=d["id"],
+            username=d["username"],
+            crypto=[Crypto.from_dict(x) for x in d["crypto"]],
+        )
 
     def to_dict(self):
         crypto_dict = [Crypto.to_dict(x) for x in self.__crypto]
-        return {"id": str(self.__id), "username": self.__username, "crypto": crypto_dict}
-
+        return {
+            "id": str(self.__id),
+            "username": self.__username,
+            "crypto": crypto_dict,
+        }
