@@ -7,17 +7,15 @@ from domain_logic.logging.observer import Observer
 from domain_logic.logging.concrete_logger_observer import (
     ConcreteLoggerObserver,
 )
-from configuration.config import set_crypto_persistence_type
 
 
 class UserRepo(Subject):
-    def __init__(self, persistence: UserPersistenceInterface):
+    def __init__(
+        self, user_persistence: UserPersistenceInterface, crypto_repo: CryptoRepo
+    ):
         self.__user_list = None
-        self.__persistence = persistence
-        crypto_persistence_type = set_crypto_persistence_type(
-            "configuration/config.json"
-        )
-        self.__crypto_persistence = CryptoRepo(crypto_persistence_type)
+        self.__user_persistence = user_persistence
+        self.__crypto_repo = crypto_repo
         self.__observers = []
         logger_observer = ConcreteLoggerObserver()
         self.add_observer(logger_observer)
@@ -33,14 +31,14 @@ class UserRepo(Subject):
             f"UserRepo executing add command for user {user.username} and id {str(user.id)}..."
         )
         self.__check_we_have_users()
-        if user.username in [u.username for u in self.__persistence.get_all()]:
+        if user.username in [u.username for u in self.__user_persistence.get_all()]:
             self.notify_observer(
                 f"User with username {user.username} is already taken. Try another username"
             )
             raise UserAlreadyAdded(
                 f"User with username {user.username} is already taken. Try another username"
             )
-        self.__persistence.add(user)
+        self.__user_persistence.add(user)
         self.__user_list.append(user)
         self.notify_observer(
             f"UserRepo successfully executed add command for user {user.username} and id {str(user.id)}"
@@ -53,9 +51,7 @@ class UserRepo(Subject):
         self.__check_if_user_id_exists(user_id)
         for user in self.__user_list:
             if str(user.id) == user_id:
-                crypto_list = self.__crypto_persistence.get_crypto_for_user(
-                    str(user.id)
-                )
+                crypto_list = self.__crypto_repo.get_crypto_for_user(str(user.id))
                 try:
                     self.notify_observer(
                         f"UserRepo successfully executed get_by_id command for user with id {user_id}"
@@ -72,23 +68,23 @@ class UserRepo(Subject):
             f"UserRepo executing update command for user with id {user_id} and username {username}..."
         )
         self.__check_if_user_id_exists(user_id)
-        self.__persistence.update(user_id, username)
+        self.__user_persistence.update(user_id, username)
         self.notify_observer(
             f"UserRepo successfully executed update command "
             f"for user with id {user_id} and username {username}.Refreshing cache."
         )
-        self.__user_list = self.__persistence.get_all()
+        self.__user_list = self.__user_persistence.get_all()
 
     def delete(self, user_id: str):
         self.notify_observer(
             f"UserRepo executing delete command for user with id {user_id}"
         )
         self.__check_if_user_id_exists(user_id)
-        self.__persistence.delete(user_id)
+        self.__user_persistence.delete(user_id)
         self.notify_observer(
             f"UserRepo successfully executed delete command for user with id {user_id}. Refreshing cache."
         )
-        self.__user_list = self.__persistence.get_all()
+        self.__user_list = self.__user_persistence.get_all()
 
     def add_observer(self, observer: Observer):
         if observer not in self.__observers:
@@ -110,4 +106,4 @@ class UserRepo(Subject):
 
     def __check_we_have_users(self):
         if self.__user_list is None:
-            self.__user_list = self.__persistence.get_all()
+            self.__user_list = self.__user_persistence.get_all()
