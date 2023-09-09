@@ -2,9 +2,9 @@ from domain_logic.crypto.crypto_repo import CryptoRepo
 from exceptions.exceptions import UserAlreadyAdded, UserNotFound
 from domain_logic.user.user import User
 from domain_logic.user.user_persistence_interface import UserPersistenceInterface
-from domain_logic.command_logging_observer_pattern.subject import Subject
-from domain_logic.command_logging_observer_pattern.observer import Observer
-from domain_logic.command_logging_observer_pattern.concrete_logger_observer import (
+from domain_logic.logging.subject import Subject
+from domain_logic.logging.observer import Observer
+from domain_logic.logging.concrete_logger_observer import (
     ConcreteLoggerObserver,
 )
 from configuration.config import set_crypto_persistence_type
