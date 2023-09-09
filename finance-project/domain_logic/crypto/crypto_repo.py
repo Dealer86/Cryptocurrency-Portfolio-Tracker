@@ -6,8 +6,8 @@ from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceIn
 
 
 class CryptoRepo(Subject):
-    def __init__(self, persistence: CryptoPersistenceInterface):
-        self.__persistence = persistence
+    def __init__(self, crypto_persistence: CryptoPersistenceInterface):
+        self.__crypto_persistence = crypto_persistence
         self.__user_crypto_cache = {}
         self.__observers = []
         logger_observer = ConcreteLoggerObserver()
@@ -17,7 +17,7 @@ class CryptoRepo(Subject):
         self.notify_observer(
             f"CryptoRepo executing add_crypto_to_user command adding {cryptocurrency.name} to user with id {user_id}..."
         )
-        self.__persistence.add_crypto_to_user(user_id, cryptocurrency)
+        self.__crypto_persistence.add_crypto_to_user(user_id, cryptocurrency)
         self.notify_observer(
             f"CryptoRepo successfully executed add_crypto_to_user command adding {cryptocurrency.name} to user with "
             f"id {user_id}."
@@ -37,7 +37,7 @@ class CryptoRepo(Subject):
             )
             return self.__user_crypto_cache[user_id]
         # If not cached, fetch from the database and cache it
-        crypto_list = self.__persistence.get_crypto_for_user(user_id)
+        crypto_list = self.__crypto_persistence.get_crypto_for_user(user_id)
         self.notify_observer(
             f"CryptoRepo successfully executed get_crypto_for_user with id {user_id}"
         )
@@ -55,7 +55,7 @@ class CryptoRepo(Subject):
             )
             return sum(crypto.price for crypto in self.__user_crypto_cache[user_id])
         # If not cached, calculate from the database and cache it
-        total_value = self.__persistence.calculate_total_crypto_value(user_id)
+        total_value = self.__crypto_persistence.calculate_total_crypto_value(user_id)
         self.notify_observer(
             f"CryptoRepo successfully executed calculate_total_crypto_value for user with id {user_id}."
         )
