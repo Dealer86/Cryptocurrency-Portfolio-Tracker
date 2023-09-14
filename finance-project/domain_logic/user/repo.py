@@ -7,8 +7,10 @@ from domain_logic.logging.observer import Observer
 from domain_logic.logging.concrete_logger_observer import (
     ConcreteLoggerObserver,
 )
+from singleton import singleton
 
 
+@singleton
 class UserRepo(Subject):
     def __init__(
         self, user_persistence: UserPersistenceInterface, crypto_repo: CryptoRepo
