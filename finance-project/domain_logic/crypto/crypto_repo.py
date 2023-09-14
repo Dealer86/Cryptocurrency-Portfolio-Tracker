@@ -3,8 +3,10 @@ from domain_logic.logging.observer import Observer
 from domain_logic.logging.subject import Subject
 from domain_logic.crypto.crypto import Crypto
 from domain_logic.crypto.crypto_persistence_interface import CryptoPersistenceInterface
+from singleton import singleton
 
 
+@singleton
 class CryptoRepo(Subject):
     def __init__(self, crypto_persistence: CryptoPersistenceInterface):
         self.__crypto_persistence = crypto_persistence
