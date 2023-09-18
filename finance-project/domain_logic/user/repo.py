@@ -88,6 +88,10 @@ class UserRepo(Subject):
         )
         self.__user_list = self.__user_persistence.get_all()
 
+    @property
+    def observers(self):
+        return self.__observers
+
     def add_observer(self, observer: Observer):
         if observer not in self.__observers:
             self.__observers.append(observer)
