@@ -64,6 +64,10 @@ class CryptoRepo(Subject):
         self.__user_crypto_cache[user_id] = total_value
         return total_value
 
+    @property
+    def observers(self):
+        return self.__observers
+
     def add_observer(self, o: Observer):
         if o not in self.__observers:
             self.__observers.append(o)
