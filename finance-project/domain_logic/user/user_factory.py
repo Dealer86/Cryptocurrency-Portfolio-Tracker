@@ -26,7 +26,7 @@ class UserFactory:
 
     @classmethod
     def __validate_no_prohibited_words(cls, username: str):
-        prohibited_words = ["admin", "root", "password", "superuser", "guest"]
+        prohibited_words = ["admin", "password", "superuser", "guest"]
         if username.lower() in prohibited_words:
             raise InvalidUsername(
                 "Username must not contain prohibited words like admin, etc."

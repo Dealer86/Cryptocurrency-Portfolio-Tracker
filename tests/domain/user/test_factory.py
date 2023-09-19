@@ -57,7 +57,6 @@ class UserFactoryTestCase(unittest.TestCase):
         # set up
         actual_prohibited_username_list = [
             "admin",
-            "root",
             "password",
             "superuser",
             "guest",
