@@ -76,7 +76,6 @@ class CryptoInfo:
                     plt.ylabel("Price (USD)")
                     plt.grid(True)
                     plt.tight_layout()
-                    plt.legend()
                     image_name = f"{coin_id}-{uuid.uuid4()}.png"
                     plt.savefig(image_name)
                     plt.clf()
