@@ -9,7 +9,7 @@ app = FastAPI(
     debug=True,
     description="A place to track/see and see cryptocurrency prices",
     title="Crypto Fintech API",
-    version="1.0.2",
+    version="1.0.3",
 )
 
 logging.basicConfig(
