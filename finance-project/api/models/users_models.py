@@ -18,4 +18,6 @@ class UserSchema(OrmSchema):
 
 
 class UserAddSchema(BaseModel):
-    username: str = Field(description="Name of the user between 4 and 20 chars")
+    username: str = Field(
+        description="Username must be alpha-numeric, between 4 and 20 chars and cannot contain prohibited words."
+    )
