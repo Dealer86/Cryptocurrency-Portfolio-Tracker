@@ -29,6 +29,7 @@ class UserPersistenceSqlite(UserPersistenceInterface):
                 cursor.execute(
                     "INSERT INTO users VALUES (?, ?)", (str(user.id), user.username)
                 )
+                conn.commit()
             except sqlite3.OperationalError as e:
                 if "no such table" in str(e):
                     cursor.execute(
@@ -37,18 +38,18 @@ class UserPersistenceSqlite(UserPersistenceInterface):
                     cursor.execute(
                         "INSERT INTO users VALUES (?, ?)", (str(user.id), user.username)
                     )
+                    conn.commit()
                 else:
                     raise e
-            conn.commit()
 
     def delete(self, user_id: str):
         with sqlite3.connect(self.__file_path) as conn:
             cursor = conn.cursor()
             try:
                 cursor.execute("DELETE FROM users WHERE id= (?)", (user_id,))
+                conn.commit()
             except sqlite3.OperationalError as e:
                 raise e
-            conn.commit()
 
     def update(self, user_id: str, username: str):
         with sqlite3.connect(self.__file_path) as conn:
@@ -57,6 +58,6 @@ class UserPersistenceSqlite(UserPersistenceInterface):
                 cursor.execute(
                     f"UPDATE users SET username = '{username}' WHERE id = '{user_id}'"
                 )
+                conn.commit()
             except sqlite3.OperationalError as e:
                 raise e
-            conn.commit()
